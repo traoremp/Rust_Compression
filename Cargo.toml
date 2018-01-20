@@ -1,0 +1,6 @@
+[package]
+name = "TP1_Techno_Multimedia"
+version = "0.1.0"
+authors = ["traoremp <traoremp@vt.edu>"]
+
+[dependencies]
