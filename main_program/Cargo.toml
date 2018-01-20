@@ -6,3 +6,5 @@ authors = ["traoremp <traoremp@vt.edu>"]
 [dependencies]
 lzw = { path = "../lzw" }
 huffman_coding = { path = "../huffman-coding-rust" }
+num_cpus = "*"
+getopts = "0.2"
