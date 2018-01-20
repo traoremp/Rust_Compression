@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["traoremp <traoremp@vt.edu>"]
 
 [dependencies]
+lzw = { path = "../lzw" }
+huffman_coding = { path = "../huffman-coding-rust" }

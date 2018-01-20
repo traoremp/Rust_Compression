@@ -1,0 +1,17 @@
+[package]
+name = "huffman_coding"
+version = "0.1.0"
+authors = ["chris"]
+
+[dependencies]
+num_cpus = "*"
+getopts = "0.2"
+crossbeam = "0.3.2"
+
+[lib]
+name = "huffman_coding"
+path = "src/lib.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
