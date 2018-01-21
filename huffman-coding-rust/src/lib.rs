@@ -30,6 +30,7 @@ pub fn read_file_to_string (filename: &str) -> String {
 pub fn print_summary(compression_results: Vec<compress::CompressionResult>, original_size: usize) {
   println!("Done! Threads used: {}", compression_results.len());
   let compressed_size = compression_results.iter().fold(0, |acc, ref result|  acc + result.bytes.len());
-  let compression_ratio = compressed_size as f32 / original_size as f32;
-  println!("Compressed bytes size {:?}, from {:?}. Ratio: {:?}", compressed_size, original_size, compression_ratio);
+  let compression_ratio =   original_size as f32/  compressed_size as f32;
+  let compression_rate = compressed_size as f32 / original_size as f32;
+  println!("Compressed bytes size {:?}, from {:?}. Ratio: {:?}, Rate: {:?}", compressed_size, original_size, compression_ratio, compression_rate);
 }

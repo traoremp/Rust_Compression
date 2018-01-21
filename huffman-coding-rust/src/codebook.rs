@@ -127,6 +127,7 @@ fn build_binary_heap(character_frequencies: &HashMap<char, usize>) -> BinaryHeap
 }
 
 fn build_tree(binary_heap: &mut BinaryHeap<Node>) -> Node {
+  
   while binary_heap.len() > 1 {
     let popped_1 = match binary_heap.pop(){
       Some(value) => value,
@@ -149,7 +150,7 @@ fn build_tree(binary_heap: &mut BinaryHeap<Node>) -> Node {
 
   match binary_heap.pop(){
       Some(value) => value,
-      None => panic!("failed at third pop")
+      None => panic!("Binary heap size : {:?}, failed at third pop", binary_heap.len())
     }
 }
 
