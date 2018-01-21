@@ -128,20 +128,29 @@ fn build_binary_heap(character_frequencies: &HashMap<char, usize>) -> BinaryHeap
 
 fn build_tree(binary_heap: &mut BinaryHeap<Node>) -> Node {
   while binary_heap.len() > 1 {
-    let popped_1 = binary_heap.pop().unwrap();
-    let popped_2 = binary_heap.pop().unwrap();
+    let popped_1 = match binary_heap.pop(){
+      Some(value) => value,
+      None => panic!("failed at first pop")
+    };
+    let popped_2 = match binary_heap.pop(){
+      Some(value) => value,
+      None => panic!("failed at second pop")
+    };
 
     let combined_node = Node {
       weight: popped_1.weight + popped_2.weight,
       data: NodeData::Children(Links {
         left: Box::new(popped_1),
-        right: Box::new(popped_2),
+        right: Box::new(popped_2)
       })
     };
     binary_heap.push(combined_node);
   }
 
-  binary_heap.pop().unwrap()
+  match binary_heap.pop(){
+      Some(value) => value,
+      None => panic!("failed at third pop")
+    }
 }
 
 fn build_codebook(tree: &Node, codebook: &mut HashMap<char,String>, start_str: &str) {
