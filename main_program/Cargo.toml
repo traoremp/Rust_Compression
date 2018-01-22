@@ -8,3 +8,4 @@ lzw = { path = "../lzw" }
 huffman_coding = { path = "../huffman-coding-rust" }
 num_cpus = "*"
 getopts = "0.2"
+image = "*"
