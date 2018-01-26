@@ -30,13 +30,13 @@ pub struct CompressionResult {
 // Otherwise, could have used Arc, to ensure that reference count to original data was incremented,
 // decremented to 0, so that heap allocation could be freed.
 
-pub fn parallel_compress(substrings: &Vec<&str>, codebook: &codebook::Codebook) -> Vec<CompressionResult> {
+pub fn parallel_compress(subarrays: &Vec<&[u8]>, codebook: &codebook::Codebook) -> Vec<CompressionResult> {
   let mut threads = vec![];
 
-  for substring in substrings {
+  for subarray in subarrays {
     crossbeam::scope(|scope| {
       threads.push(scope.spawn(move|| {
-        compress(&substring, &codebook)
+        compress(&subarray, &codebook)
       }));
     });
   }
@@ -53,14 +53,14 @@ pub fn parallel_compress(substrings: &Vec<&str>, codebook: &codebook::Codebook) 
 
 // Fills one byte at a time with binary digits, using bitshifting.
 // Uses another byte, starting at 0, and filling up to 11111111 to track progress
-fn compress(input_string: &str, codebook: &codebook::Codebook) -> CompressionResult {
+fn compress(input_array: &[u8], codebook: &codebook::Codebook) -> CompressionResult {
   let mut output_bytes: Vec<u8> = Vec::new();
   let mut byte_buffer: u8 = 0u8;
   let mut progress_byte: u8 = 0u8;
   let mut bits_padded = 0;
 
-  for ch in input_string.chars() {
-    let code = codebook.character_map.get(&ch).unwrap();
+  for ch in input_array {
+    let code = codebook.character_map.get(ch).unwrap();
     for code_ch in code.chars() {
       let new_bit = if code_ch == '0' { 0 } else { 1 };
       byte_buffer = (byte_buffer << 1) | new_bit;

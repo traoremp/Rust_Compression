@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
-pub fn hash_map_reducer(hash_maps: Vec<HashMap<char, usize>>) -> HashMap<char, usize> {
-  let mut result: HashMap<char, usize> = HashMap::new();
+pub fn hash_map_reducer(hash_maps: Vec<HashMap<u8, usize>>) -> HashMap<u8, usize> {
+  let mut result: HashMap<u8, usize> = HashMap::new();
 
   for hash_map in hash_maps {
     for (key, val) in hash_map.iter() {
@@ -13,25 +13,25 @@ pub fn hash_map_reducer(hash_maps: Vec<HashMap<char, usize>>) -> HashMap<char, u
   result
 }
 
-pub fn string_to_substrings(input_string: &str, substring_count: usize) -> Vec<&str> {
-  let input_string_length = input_string.len();
-  let length_per_thread = input_string_length / substring_count;
+pub fn string_to_substrings(input: &[u8], subarray_count: usize) -> Vec<&[u8]> {
+  let input_length = input.len();
+  let length_per_thread = input_length / subarray_count;
 
-  let mut substring_offsets = Vec::with_capacity(substring_count);
+  let mut subarray_offsets = Vec::with_capacity(subarray_count);
 
-  for n in 1..substring_count {
+  for n in 1..subarray_count {
     let offset = n * length_per_thread;
-    substring_offsets.push(offset);
+    subarray_offsets.push(offset);
   }
-  substring_offsets.push(input_string_length);
+  subarray_offsets.push(input_length);
 
-  let mut substrings = vec![];
+  let mut subarrays = vec![];
   let mut from = 0;
 
-  for substring_offset in substring_offsets {
-    substrings.push(&input_string[from..substring_offset]);
-    from = substring_offset;
+  for subarray_offset in subarray_offsets {
+    subarrays.push(&input[from..subarray_offset]);
+    from = subarray_offset;
   }
 
-  substrings
+  subarrays
 }
