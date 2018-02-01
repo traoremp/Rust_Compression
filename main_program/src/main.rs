@@ -5,6 +5,7 @@ extern crate huffman_coding;
 extern crate num_cpus;
 // extern crate getopts;
 extern crate image; 
+extern crate cpuprofiler;
 
 use std::io::Read;
 // use getopts::Options;
@@ -14,6 +15,7 @@ use huffman_coding::util::string_to_substrings;
 use huffman_coding::compress::parallel_compress;
 use huffman_coding::print_summary;
 use lzw::{LsbWriter, Encoder};
+use cpuprofiler::PROFILER;
 // use image::DynamicImage;
 
 fn encode_lzw( compressed : &mut Vec<u8>, dict_size : u8, data_to_encode : &[u8]){
@@ -72,7 +74,9 @@ fn main(){
     let mut compressed : Vec<u8> = vec!();
     // LZW image encoding
     {
-        encode_lzw(&mut compressed, 8, &my_image_as_vec[..] );
+        PROFILER.lock().unwrap().start("./my-prof.profile").expect("Couldn't start");
+        encode_lzw(&mut compressed, 8, &my_image_as_vec[..] ); 
+        PROFILER.lock().unwrap().stop().expect("Couldn't stop");        
     }
     
     let compression_rate = compressed.len() as f32 / my_image_as_vec.len() as f32 ;

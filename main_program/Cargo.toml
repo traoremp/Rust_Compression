@@ -9,3 +9,4 @@ huffman_coding = { path = "../huffman-coding-rust" }
 num_cpus = "*"
 getopts = "0.2"
 image = "*"
+cpuprofiler = "0.0.2"
