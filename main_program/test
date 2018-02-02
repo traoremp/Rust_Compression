@@ -1,0 +1,13 @@
+
+LZW Compressed bytes size 269412, from 200002. Ratio: 0.7423649, Rate 1.3470465
+
+Huffman Compressed bytes size 198791, from 200002. Ratio: 1.0060918, Rate 0.99394506
+
+Decompression LZW 2
+
+Decompression Huffman
+
+IMAGE LZW Compressed bytes size 1017438, from 843840. Ratio: 0.8293773, Rate 1.2057239
+
+Huffman Compressed bytes size 824032, from 843840. Ratio: 1.024038, Rate 0.9765264
+
