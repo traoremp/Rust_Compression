@@ -41,7 +41,7 @@ fn main(){
         * Convert to binary
         * encode - decode
     */
-    let file_name = "docs_lab_1_techno_multimedia/unicode_random.txt";
+    let file_name = "docs_lab_1_techno_multimedia/calgary_data_set/xargs.1";
     let mut file = match File::open(file_name){
 
         Ok(file) => file,
@@ -98,49 +98,49 @@ fn main(){
     println!("Huffman Compressed bytes size {:?}, from {:?}. Ratio: {:?}, Rate {:?}", compressed_size_huffman, my_string_buffer.len(), compression_ratio_huffman, compression_rate_huffman);
     println!("Number of elements in the dictionnary: {} \n", dictionnary_size);
     //IMAGE 
-    let my_image = image::open("docs_lab_1_techno_multimedia/image3.jpg").unwrap();
-    let my_rgb_image = my_image.to_rgb();
-    let my_image_as_vec = my_rgb_image.into_raw();
-    let mut compressed : Vec<u8> = vec!();
-    // LZW image encoding
-    let start = PreciseTime::now();
-    {
-        encode_lzw(&mut compressed, 8, &my_image_as_vec[..], "lzw_image" ); 
-    }
+    // let my_image = image::open("docs_lab_1_techno_multimedia/image3.jpg").unwrap();
+    // let my_rgb_image = my_image.to_rgb();
+    // let my_image_as_vec = my_rgb_image.into_raw();
+    // let mut compressed : Vec<u8> = vec!();
+    // // LZW image encoding
+    // let start = PreciseTime::now();
+    // {
+    //     encode_lzw(&mut compressed, 8, &my_image_as_vec[..], "lzw_image" ); 
+    // }
 
-    let duree = start.to(PreciseTime::now()).num_nanoseconds().unwrap();
-    println!("It took us {} ns to encode your data. This makes an encoding rate of {} ns/byte .", duree, duree / (compressed.len() as i64));
-    let compression_rate = compressed.len() as f32 / my_image_as_vec.len() as f32 ;
-    let compression_ratio = my_image_as_vec.len() as f32 / compressed.len() as f32;
-    println!("IMAGE LZW Compressed bytes size {:?}, from {:?}. Ratio: {:?}, Rate {:?}\n",  compressed.len(), my_image_as_vec.len(), compression_ratio, compression_rate);
+    // let duree = start.to(PreciseTime::now()).num_nanoseconds().unwrap();
+    // println!("It took us {} ns to encode your data. This makes an encoding rate of {} ns/byte .", duree, duree / (compressed.len() as i64));
+    // let compression_rate = compressed.len() as f32 / my_image_as_vec.len() as f32 ;
+    // let compression_ratio = my_image_as_vec.len() as f32 / compressed.len() as f32;
+    // println!("IMAGE LZW Compressed bytes size {:?}, from {:?}. Ratio: {:?}, Rate {:?}\n",  compressed.len(), my_image_as_vec.len(), compression_ratio, compression_rate);
 
-    // Huffman image encoding
+    // // Huffman image encoding
 
-    // //huffman encoding
-    //let my_string_content = String::from_utf8(my_image_as_vec).unwrap();
-    let substrings = string_to_substrings(&my_image_as_vec[..], 1);
-    //println!("{:?}", my_string_content);
-    //println!("{:?}", substrings);
-    let start = PreciseTime::now();    
-    //PROFILER.lock().unwrap().start("huffman_image".to_string() + "-encoding.profile").expect("Couldn't start");
-    let codebook = Codebook::new(&substrings);
-    let duree = start.to(PreciseTime::now()).num_nanoseconds().unwrap();    
-    println!("It took us {} ns to create the dictionnary tree.", duree);
+    // // //huffman encoding
+    // //let my_string_content = String::from_utf8(my_image_as_vec).unwrap();
+    // let substrings = string_to_substrings(&my_image_as_vec[..], 1);
+    // //println!("{:?}", my_string_content);
+    // //println!("{:?}", substrings);
+    // let start = PreciseTime::now();    
+    // //PROFILER.lock().unwrap().start("huffman_image".to_string() + "-encoding.profile").expect("Couldn't start");
+    // let codebook = Codebook::new(&substrings);
+    // let duree = start.to(PreciseTime::now()).num_nanoseconds().unwrap();    
+    // println!("It took us {} ns to create the dictionnary tree.", duree);
     
-    //PROFILER.lock().unwrap().stop().expect("Couldn't stop"); 
-    //println!("{:?}", codebook.character_map);
-    let start = PreciseTime::now();
-    //PROFILER.lock().unwrap().start("huffman_image".to_string() + "-compressing.profile").expect("Couldn't start");
-    let compression_results = parallel_compress(&substrings, &codebook);
-    let duree = start.to(PreciseTime::now()).num_nanoseconds().unwrap();
-    println!("It took us {} ns to encode your data. This makes an encoding rate of {} ns/byte.", duree, duree / (compression_results.iter().fold(0, |acc, ref result|  acc + result.bytes.len()) as i64));
+    // //PROFILER.lock().unwrap().stop().expect("Couldn't stop"); 
+    // //println!("{:?}", codebook.character_map);
+    // let start = PreciseTime::now();
+    // //PROFILER.lock().unwrap().start("huffman_image".to_string() + "-compressing.profile").expect("Couldn't start");
+    // let compression_results = parallel_compress(&substrings, &codebook);
+    // let duree = start.to(PreciseTime::now()).num_nanoseconds().unwrap();
+    // println!("It took us {} ns to encode your data. This makes an encoding rate of {} ns/byte.", duree, duree / (compression_results.iter().fold(0, |acc, ref result|  acc + result.bytes.len()) as i64));
 
-    //PROFILER.lock().unwrap().stop().expect("Couldn't stop"); 
-    //print_summary(compression_results, my_string_content.len());
-    let dictionnary_size = codebook.character_map.len() + codebook.character_map.iter().fold(0, |acc, (key, ref val)|  acc + val.len());
-    let compressed_size_huffman = compression_results.iter().fold(0, |acc, ref result|  acc + result.bytes.len());
-    let compression_rate_huffman = compressed_size_huffman as f32 / my_image_as_vec.len() as f32;
-    let compression_ratio_huffman =   my_image_as_vec.len() as f32/  compressed_size_huffman as f32;
-    println!("Huffman Compressed bytes size {:?}, from {:?}. Ratio: {:?}, Rate {:?}", compressed_size_huffman, my_image_as_vec.len(), compression_ratio_huffman, compression_rate_huffman);
-    println!("Number of elements in the dictionnary: {}\n", dictionnary_size);
+    // //PROFILER.lock().unwrap().stop().expect("Couldn't stop"); 
+    // //print_summary(compression_results, my_string_content.len());
+    // let dictionnary_size = codebook.character_map.len() + codebook.character_map.iter().fold(0, |acc, (key, ref val)|  acc + val.len());
+    // let compressed_size_huffman = compression_results.iter().fold(0, |acc, ref result|  acc + result.bytes.len());
+    // let compression_rate_huffman = compressed_size_huffman as f32 / my_image_as_vec.len() as f32;
+    // let compression_ratio_huffman =   my_image_as_vec.len() as f32/  compressed_size_huffman as f32;
+    // println!("Huffman Compressed bytes size {:?}, from {:?}. Ratio: {:?}, Rate {:?}", compressed_size_huffman, my_image_as_vec.len(), compression_ratio_huffman, compression_rate_huffman);
+    // println!("Number of elements in the dictionnary: {}\n", dictionnary_size);
 }
