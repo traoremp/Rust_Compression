@@ -9,6 +9,7 @@ getopts = "0.2"
 crossbeam = "0.3.2"
 
 [lib]
+crate-type=["dylib"]
 name = "huffman_coding"
 path = "src/lib.rs"
 

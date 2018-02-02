@@ -10,3 +10,8 @@ repository = "https://github.com/nwin/lzw.git"
 [features]
 default = ["raii_no_panic"]
 raii_no_panic = []
+
+[lib]
+crate-type=["dylib"]
+name = "lzw"
+path = "src/lib.rs"
